@@ -1,3 +1,4 @@
+
 import java.util.Scanner; 
 class NegativeNumberException extends Exception {
 	
@@ -17,7 +18,48 @@ class NegativeNumberException extends Exception {
 	}
 }
 
+class NotANumberException extends Exception { 
+	private String string; 
+	NotANumberException (String message, String string) {
+		super(message); 
+		this.string = string; 
+		
+	}
+}
 
+class NumberCheck {
+	static void foo (String string) throws NotANumberException{
+		boolean isString = false ; 
+		
+		for (int i = 0; i < string.length(); i++) {
+	        
+	        if (string.charAt(i) == '-') {
+	        	if (string.charAt(i +1 ) < '0' || string.charAt(i +1) > '9') {
+		            isString = true; 
+		        }
+	        	else {
+	        		isString = false; 
+	        	}
+	        }
+	        else if (string.charAt(i) < '0' || string.charAt(i) > '9') {
+	            isString = true; 
+	        }
+	        
+	        else {
+	        	isString = false; 
+	        }
+	        
+	        
+	    }
+		
+		if (isString == true) {
+			throw new NotANumberException ("It is not a number", string) ; 
+		}
+	     
+	    
+	    
+	}
+}
 
 
 class DivisionByZeroException extends Exception { 
@@ -57,14 +99,19 @@ public class ExceptionHandlingPractice extends Exception{
 	
 	private double number; 
 	
-	public static void main (String args [])  throws NegativeNumberException, DivisionByZeroException{
+	public static void main (String args [])  throws NegativeNumberException, DivisionByZeroException, NotANumberException{
 		
 		Scanner scan = new Scanner(System.in); 
 		
 		try {
-			double a = scan.nextDouble() ; 
+			String string = scan.nextLine(); 
+			NumberCheck.foo(string) ; 
+			double a = Double.parseDouble(string); 
 			arithmaticCheck.foo(a);
-			System.out.println("End Of Main");
+			
+		}
+		catch (NotANumberException i) {
+			System.out.println(i.getMessage()); 
 		}
 		catch (NegativeNumberException e) {
 			System.out.println(e.getMessage());
@@ -79,7 +126,7 @@ public class ExceptionHandlingPractice extends Exception{
 			System.out.println("the number has been reset to: " + e.getNumber()) ; 
 		}
 		finally  {
-			System.out.println("End of Main");
+			System.out.println("End Of Main");
 		}
 		
 		
@@ -90,3 +137,4 @@ public class ExceptionHandlingPractice extends Exception{
 	
 	
 }
+
